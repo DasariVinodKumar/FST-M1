@@ -1,43 +1,36 @@
-package Activity;
+package Project;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
+import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterClass;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class Activity1 {
-
 	WebDriver driver;
+	WebDriverWait wait;
 
-	@BeforeClass
+	@BeforeMethod
 	public void setUp() {
-		// WebDriverManager.firefox().setup();
 		driver = new FirefoxDriver();
-
-		driver.get("https://training-support.net/");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	@Test(priority = 1)
-	public void pageTitleTest() {
-
-		assertEquals(driver.getTitle(), "About Training Support");
-	}
-
-	@Test(priority = 2)
-	public void aboutLinkTest() {
-		driver.findElement(By.linkText("About Us")).click();
-		assertEquals(driver.getTitle(), "About Training Support");
+	@Test
+	public void verifyTitle() {
+		driver.get("https://alchemy.hguy.co/lms");
+		String actualTitle = driver.getTitle();
+		String expectedTitle = "Alchemy LMS – An LMS Application";
+		Assert.assertEquals(actualTitle, expectedTitle, "Title did not match!");
 
 	}
 
-	@AfterClass
-	public void afterMethod() {
-		// Close the browser
+	@AfterMethod
+	public void tearDown() {
 		driver.quit();
 	}
 }

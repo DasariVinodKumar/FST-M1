@@ -1,55 +1,41 @@
-package Activity;
+package Project;
+
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 public class Activity5 {
-    WebDriver driver;
-    //Include alwaysRun property on the @BeforeTest
-    //to make sure the page opens
-    @BeforeTest(alwaysRun = true)
-    public void beforeMethod() {
-        // Set up the Firefox driver
-        //Create a new instance of the Firefox driver
-        driver = new FirefoxDriver();
-        //Open the browser
-        driver.get("https://v1.training-support.net/selenium/target-practice");
-    }
-    @Test (groups = {"HeaderTests", "ButtonTests"})
-    public void pageTitleTest() {
-        String title = driver.getTitle();
-        System.out.println("Title is: " + title);
-        Assert.assertEquals(title, "Target Practice");
-    }
-    @Test (dependsOnMethods = {"pageTitleTest"}, groups = {"HeaderTests"})
-    public void HeaderTest1() {
-        WebElement header3 = driver.findElement(By.cssSelector("h3#third-header"));
-        Assert.assertEquals(header3.getText(), "Third header");
-    }
-    @Test (dependsOnMethods = {"pageTitleTest"}, groups = {"HeaderTests"})
-    public void HeaderTest2() {
-        WebElement header5 = driver.findElement(By.cssSelector("h3#third-header"));
-        Assert.assertEquals(header5.getCssValue("color"), "rgb(251, 189, 8)");
-    }
-    @Test (dependsOnMethods = {"pageTitleTest"}, groups = {"ButtonTests"})
-    public void ButtonTest1() {
-        WebElement button1 = driver.findElement(By.cssSelector("button.olive"));
-        Assert.assertEquals(button1.getText(), "Olive");
-    }
-    @Test(dependsOnMethods = {"pageTitleTest"}, groups = {"ButtonTests"})
-    public void ButtonTest2() {
-        WebElement button2 = driver.findElement(By.cssSelector("button.brown"));
-        Assert.assertEquals(button2.getCssValue("color"), "rgb(255, 255, 255)");
-    }
-    //Include alwaysRun property on the @AfterTest
-    //to make sure the page closes
-    @AfterTest(alwaysRun = true)
-    public void afterMethod() {
-        //Close the browser
-        driver.close();
-    }
+
+	WebDriver driver;
+	WebDriverWait wait;
+
+	@BeforeMethod
+	public void setUp() {
+		driver = new FirefoxDriver();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	}
+
+	@Test
+	public void testNavigateToMyAccountPage() {
+		driver.get("https://alchemy.hguy.co/lms");
+		WebElement myAccountLink = driver.findElement(By.linkText("My Account"));
+		myAccountLink.click();
+		String pageTitle = driver.getTitle();
+		Assert.assertTrue(pageTitle.contains("My Account"), "Page title did not contain 'My Account'.");
+
+	}
+
+	@AfterMethod
+	public void tearDown() {
+		driver.quit();
+	}
+
 }

@@ -12,7 +12,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class Activity2 {
+public class Activity4 {
+
 	WebDriver driver;
 	WebDriverWait wait;
 
@@ -22,19 +23,17 @@ public class Activity2 {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	@Test
-	public void verifyHeading() {
-		driver.get("https://alchemy.hguy.co/lms");
-		WebElement heading = driver.findElement(By.xpath("//h1[contains(text(),'Learn from Industry Experts')]"));
-		String actualHeading = heading.getText();
-		String expectedHeading = "Learn from Industry Experts";
-		Assert.assertEquals(actualHeading, expectedHeading, "Heading did not match!");
+    @Test
+    public void verifySecondPopularCourseTitle() {
+        driver.get("https://alchemy.hguy.co/lms");
+        WebElement secondPopularCourse = driver.findElement(By.xpath("(//h3)[2]"));
+        String actualTitle = secondPopularCourse.getText();
+        String expectedTitle = "Email Marketing Strategies";
+        Assert.assertEquals(actualTitle, expectedTitle, "Second most popular course title did not match!");
+    }
 
-	}
-
-	@AfterMethod
-	public void tearDown() {
-		driver.quit();
-	}
-
+    @AfterMethod
+    public void tearDown() {
+        driver.quit();
+    }
 }
